@@ -9,10 +9,18 @@ void swap_node(listint_t *curr, listint_t **list)
 	listint_t *tmp = NULL, *aux = NULL;
 
 	tmp = curr->prev;
-	if (curr->next == NULL)
-	{
+
+	if (curr->next == NULL && tmp->prev == NULL)
+	{/* list of 2 elemnets*/
+		curr->prev = NULL;
+		curr->next = tmp;
+		tmp->prev = curr;
+		tmp->next = NULL;
+		*list = curr;
+	}
+	else if (curr->next == NULL)
+	{/* swap - at the end */
 		aux = curr->prev->prev;
-		/* swap - at the end */
 		aux->next = curr;
 		curr->prev = aux;
 		curr->next = tmp;
@@ -20,8 +28,7 @@ void swap_node(listint_t *curr, listint_t **list)
 		tmp->next = NULL;
 	}
 	else if (curr->prev->prev != NULL)
-	{
-		/* swap - in the middel */
+	{/* swap - in the middel */
 		aux = curr->prev->prev;
 		curr->next->prev = curr->prev;
 		curr->prev->next = curr->next;
@@ -31,8 +38,7 @@ void swap_node(listint_t *curr, listint_t **list)
 		aux->next = curr;
 	}
 	else
-	{
-		/* swap - at the beginning */
+	{/* swap - at the beginning */
 		curr->next->prev = curr->prev;
 		curr->prev->next = curr->next;
 		curr->prev = NULL;
@@ -53,7 +59,7 @@ void insertion_sort_list(listint_t **list)
 
 	if (list == NULL || (*list)->next == NULL)
 	{
-		print_list(*list);
+		return;
 	}
 	curr = *list;
 	while (curr->next)
